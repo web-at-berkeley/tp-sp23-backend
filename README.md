@@ -19,7 +19,7 @@ Make sure you read this ENTIRE DOCUMENT, especially these instructions, carefull
 To submit your project, please place your submission into a GitHub repo that is set to private. You
 will be submitting your code on [Gradescope](https://www.gradescope.com/). If you do not have a
 Gradescope account, please create one and if you are unable to create one, please email us
-immediately. The Gradescope course code is `TODO`. You will see two different assignments:
+immediately. The Gradescope course code is `8NBBGP`. You will see two different assignments:
 `Frontend Project` and `Backend Project`. _Please only submit to Backend Technical Project._ You can ignore Frontend Technical Project.
 
 The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then (we will be hosting technical project office hours in our club recruitment Discord, which you can join [here](https://linktr.ee/webdevatberkeley)).
@@ -92,7 +92,7 @@ Example response:
       "owner": "Jiro"
     },
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "fur": "blue",
       "hornLength": 12,
       "isBaby": false,
@@ -176,7 +176,7 @@ Example response:
 }
 ```
 
-## Adopt Unicorn
+## Adopt Unicorn (**INDUSTRY ONLY**)
 
 This route should receive the name of a unicorn and complete an adoption by changing its owner to the user who has ridden it for the longest duration.
 
@@ -217,7 +217,7 @@ Example response:
       "duration": 10
     },
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "duration": 20
     }
   ]
@@ -256,7 +256,7 @@ Request body:
 
 ```json
 {
-  "name": "Big Blue Horn",
+  "name": "Sapphire",
   "fur": "blue",
   "hornLength": 12,
   "isBaby": false,
@@ -319,7 +319,7 @@ Response:
       "owner": null
     },
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "fur": "blue",
       "hornLength": 12,
       "isBaby": false,
@@ -355,7 +355,7 @@ Response:
 {
   "unicorns": [
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "fur": "blue",
       "hornLength": 12,
       "isBaby": false,
@@ -374,7 +374,7 @@ Request: POST /ride
 ```json
 {
   "user": "Natalia",
-  "unicorn": "Big Blue Horn",
+  "unicorn": "Sapphire",
   "duration": 5
 }
 ```
@@ -388,7 +388,7 @@ Request: POST /ride
 ```json
 {
   "user": "Nico",
-  "unicorn": "Big Blue Horn",
+  "unicorn": "Sapphire",
   "duration": 5
 }
 ```
@@ -467,7 +467,7 @@ Request: POST /ride
 }
 ```
 
-1. Find who's ridden some unicorns for the longest total time:
+4. Find who's ridden some unicorns for the longest total time:
 
 ```
 Request: GET /longest-rider/Big Drip J
@@ -481,10 +481,10 @@ Response:
 }
 ```
 
-Natalia and Nico both rode Big Blue Horn for 5 minutes, but Natalia's name comes first in alphabetical order, so she should be returned:
+Natalia and Nico both rode Sapphire for 5 minutes, but Natalia's name comes first in alphabetical order, so she should be returned:
 
 ```
-Request: GET /longest-rider/Big Blue Horn
+Request: GET /longest-rider/Sapphire
 ```
 
 Response:
@@ -501,7 +501,7 @@ Nobody rode Brother, so the API should return an error for this request:
 Request: GET /longest-rider?name=Brother
 ```
 
-5. Some unicorns are adopted:
+5. **(INDUSTRY ONLY)** Some unicorns are adopted:
 
 ```
 Request: POST /adopt
@@ -521,7 +521,7 @@ Request: POST /adopt
 
 ```json
 {
-  "name": "Big Blue Horn"
+  "name": "Sapphire"
 }
 ```
 
@@ -539,7 +539,7 @@ Request: POST /adopt
 }
 ```
 
-1. Check the new list of unicorns, including their new owners:
+6. Check the updated list of unicorns, including their new owners (the updated owners is necessary for **INDUSTRY ONLY**):
 
 ```
 Request: GET /unicorns
@@ -558,7 +558,7 @@ Response:
       "owner": "Jiro"
     },
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "fur": "blue",
       "hornLength": 12,
       "isBaby": false,
@@ -582,7 +582,7 @@ Response:
 }
 ```
 
-1. (**INDUSTRY ONLY**) Get the list of Natalia's unicorns, and how long she's ridden each of them:
+7. (**INDUSTRY ONLY**) Get the list of Natalia's unicorns, and how long she's ridden each of them:
 
 ```
 Request: GET /adopted-unicorns/Natalia
@@ -594,7 +594,7 @@ Response:
 {
   "unicorns": [
     {
-      "name": "Big Blue Horn",
+      "name": "Sapphire",
       "duration": 5
     }
   ]
