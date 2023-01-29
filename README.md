@@ -607,7 +607,9 @@ Some of these routes are naturally harder than others. If you aren't able to fin
 
 Note: we highly recommend using MongoDB as your database for this project, although if you don't have experience with it, any NoSQL database is also a great alternative. If none of those work however, you are still welcome to use other databases.
 
-It is also encouraged to use JavaScript/TypeScript with Node.js for your backend, but it is completely fine if you would rather use a different stack.
+It is also encouraged to use JavaScript/TypeScript with Node.js for your backend, but it's completely fine if you would rather use a different stack.
+
+Finally, we recommend using [Postman](https://www.postman.com/) or a similar tool to test your API.
 
 ## Design Doc
 
