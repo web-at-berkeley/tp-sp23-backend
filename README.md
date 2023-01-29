@@ -22,7 +22,7 @@ Gradescope account, please create one and if you are unable to create one, pleas
 immediately. The Gradescope course code is `8NBBGP`. You will see two different assignments:
 `Frontend Project` and `Backend Project`. _Please only submit to Backend Technical Project._ You can ignore Frontend Technical Project.
 
-The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then (we will be hosting technical project office hours in our club recruitment Discord, which you can join [here](https://linktr.ee/webdevatberkeley)).
+The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then.
 
 Also, this page may potentially keep changing if we get some frequently asked questions, so keep this repository bookmarked and check back on it every now and then! If there are major changes however, we'll make sure to email you about those.
 
