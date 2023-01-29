@@ -19,7 +19,7 @@ Make sure you read this ENTIRE DOCUMENT, especially these instructions, carefull
 To submit your project, please place your submission into a GitHub repo that is set to private. You
 will be submitting your code on [Gradescope](https://www.gradescope.com/). If you do not have a
 Gradescope account, please create one and if you are unable to create one, please email us
-immediately. The Gradescope course code is `TODO`. You will see two different assignments:
+immediately. The Gradescope course code is `8NBBGP`. You will see two different assignments:
 `Frontend Project` and `Backend Project`. _Please only submit to Backend Technical Project._ You can ignore Frontend Technical Project.
 
 The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then (we will be hosting technical project office hours in our club recruitment Discord, which you can join [here](https://linktr.ee/webdevatberkeley)).
