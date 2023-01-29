@@ -53,10 +53,13 @@ Unicorns can be signed up for adoption at any point. When unicorns are added, at
 
 Example request:
 
-```json
+```
 POST /unicorns
+```
 
 Request body:
+
+```json
 {
   "name": "Big Drip J",
   "fur": "white",
@@ -138,10 +141,13 @@ A user can ride a unicorn that's up for adoption to see whether they're a good m
 
 Example request:
 
-```json
+```
 POST /ride
+```
 
 Request body:
+
+```json
 {
   "user": "Anish",
   "unicorn": "Puff",
@@ -179,10 +185,13 @@ This route should receive the name of a unicorn and complete an adoption by chan
 
 Example request:
 
-```json
+```
 POST /adopt
+```
 
 Request body:
+
+```json
 {
   "unicorn": "Big Drip J"
 }
@@ -198,7 +207,7 @@ Example request:
 GET /adopted-unicorns/Jiro
 ```
 
-Result:
+Example response:
 
 ```json
 {
@@ -221,19 +230,31 @@ In case it helps, here's a couple of example scenarios of how the API might be u
 
 1. Register a few unicorns:
 
-```json
+```
 Request: POST /unicorns
+```
+
+Request body:
+
+```json
 {
-    "name": "Big Drip J",
-    "fur": "white",
-    "hornLength": 8,
-    "isBaby": true,
-    "owner": null
+  "name": "Big Drip J",
+  "fur": "white",
+  "hornLength": 8,
+  "isBaby": true,
+  "owner": null
 }
 ```
 
-```json
+---
+
+```
 Request: POST /unicorns
+```
+
+Request body:
+
+```json
 {
   "name": "Big Blue Horn",
   "fur": "blue",
@@ -243,8 +264,15 @@ Request: POST /unicorns
 }
 ```
 
-```json
+---
+
+```
 Request: POST /unicorns
+```
+
+Request body:
+
+```json
 {
   "name": "Brother",
   "fur": "yellow",
@@ -254,8 +282,15 @@ Request: POST /unicorns
 }
 ```
 
-```json
+---
+
+```
 Request: POST /unicorns
+```
+
+Request body:
+
+```json
 {
   "name": "Puff",
   "fur": "pink",
@@ -271,7 +306,7 @@ Request: POST /unicorns
 Request: GET /unicorns
 ```
 
-Result:
+Response:
 
 ```json
 {
@@ -332,8 +367,11 @@ Response:
 
 3. Users ride some unicorns:
 
-```json
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Natalia",
   "unicorn": "Big Blue Horn",
@@ -341,8 +379,13 @@ Request: POST /ride
 }
 ```
 
-```json
+---
+
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Nico",
   "unicorn": "Big Blue Horn",
@@ -350,8 +393,13 @@ Request: POST /ride
 }
 ```
 
-```json
+---
+
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Jiro",
   "unicorn": "Big Drip J",
@@ -359,28 +407,43 @@ Request: POST /ride
 }
 ```
 
-```json
+---
+
+```
 Request: POST /ride
-{
-    "user": "Anish",
-    "unicorn": "Big Drip J",
-    "duration": 20
-}
 ```
 
 ```json
+{
+  "user": "Anish",
+  "unicorn": "Big Drip J",
+  "duration": 20
+}
+```
+
+---
+
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Jiro",
   "unicorn": "Big Drip J",
   "duration": 15
 }
 ```
+
+---
 
 **(INDUSTRY ONLY)** If you complete the industry checkpoint, the following request should fail since Jiro has already ridden Big Drip J twice:
 
-```json
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Jiro",
   "name": "Big Drip J",
@@ -388,10 +451,15 @@ Request: POST /ride
 }
 ```
 
+---
+
 **(INDUSTRY ONLY)** This request should also fail if you complete the industry checkpoint, since Puff already has an owner:
 
-```json
+```
 Request: POST /ride
+```
+
+```json
 {
   "user": "Natalia",
   "name": "Puff",
@@ -399,9 +467,9 @@ Request: POST /ride
 }
 ```
 
-4. Find who's ridden some unicorns for the longest total time:
+1. Find who's ridden some unicorns for the longest total time:
 
-```json
+```
 Request: GET /longest-rider/Big Drip J
 ```
 
@@ -435,15 +503,23 @@ Request: GET /longest-rider?name=Brother
 
 5. Some unicorns are adopted:
 
-```json
+```
 Request: POST /adopt
+```
+
+```json
 {
   "name": "Big Drip J"
 }
 ```
 
-```json
+---
+
+```
 Request: POST /adopt
+```
+
+```json
 {
   "name": "Big Blue Horn"
 }
@@ -451,16 +527,21 @@ Request: POST /adopt
 
 This request should fail since nobody rode Brother:
 
-```json
+---
+
+```
 Request: POST /adopt
+```
+
+```json
 {
   "name": "Brother"
 }
 ```
 
-6. Check the new list of unicorns, including their new owners:
+1. Check the new list of unicorns, including their new owners:
 
-```json
+```
 Request: GET /unicorns
 ```
 
@@ -503,7 +584,7 @@ Response:
 
 1. (**INDUSTRY ONLY**) Get the list of Natalia's unicorns, and how long she's ridden each of them:
 
-```json
+```
 Request: GET /adopted-unicorns/Natalia
 ```
 
