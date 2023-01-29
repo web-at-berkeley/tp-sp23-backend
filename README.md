@@ -1,470 +1,522 @@
-# Grand Cheese Race
+# WDB Backend Technical Project Sp '23 - Unicorn Adoption
 
 ## Preface
-Thanks for applying to Web Development at Berkeley & for taking the time to work on this technical project. Projects are due Wednesday, September 7th by 11:59 PM.
+
+Thanks for applying to Web Development at Berkeley & for taking the time to work on this technical project. Projects are due Monday, January 30th by 11:59 PM.
 
 This project is designed for **you** to gauge whether you want to apply to the **bootcamp** or **industry** branch. Completing all checkpoints for the branch you are applying to is highly preferred, but don't worry if you aren't able to finish everything! As an estimate, you shouldn't need to spend any longer than ~3-4 hours on this project -- we don't want this to be a huge burden on you.
 
-
 ## Clarifications
-- to clarify, latecomers (runners who register after some time has passed) still start at the beginning of the race!
-- you only need to query the valid gifts API once, you can assume it won't change after that.
-- you do not need to use a cloud-hosted MongoDB instance. Localhost is fine for everything.
+
+This section will be updated with clarifications as they come up!
 
 ## Submission Instructions
 
-Welcome to WDB's backend project for development branch applicants — Fall 2022 👋
+Welcome to WDB's backend project for development branch applicants — Spring 2023 👋
 
-Make sure you read this ENTIRE DOCUMENT, especially these instructions, carefully before you start. If you have any questions
-please reach out to [our email](webatberkeley@gmail.com).
+Make sure you read this ENTIRE DOCUMENT, especially these instructions, carefully before you start. If you have any questions please reach out to [our email](webatberkeley@gmail.com).
 
 To submit your project, please place your submission into a GitHub repo that is set to private. You
 will be submitting your code on [Gradescope](https://www.gradescope.com/). If you do not have a
 Gradescope account, please create one and if you are unable to create one, please email us
-immediately. The Gradescope course code is `4V22DJ`. You will see two different assignments:
+immediately. The Gradescope course code is `TODO`. You will see two different assignments:
 `Frontend Project` and `Backend Project`. _Please only submit to Backend Technical Project._ You can ignore Frontend Technical Project.
 
-The technical project will be due by Wednesday, 9/7 at midnight. We will be unable to respond to clarification emails sent in after then. so if you have any questions about the project, please let us know before then (we will be hosting technical project office hours in our club recruitment Discord, which you can join [here](https://linktr.ee/webdevatberkeley)).
+The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then (we will be hosting technical project office hours in our club recruitment Discord, which you can join [here](https://linktr.ee/webdevatberkeley)).
 
 Also, this page may potentially keep changing if we get some frequently asked questions, so keep this repository bookmarked and check back on it every now and then! If there are major changes however, we'll make sure to email you about those.
 
 ## Introduction
 
-The Grand Cheese Race has been the most elite sporting event for thousands of years. Every year, each country sends one honorable representative to compete for the Double Gloucester cheese. This year, for the first time in history, all living previous victors are coming to compete for the Golden Double Gloucester cheese. Our client is organizing the Grand Cheese Race and wants you to build a service to:
+> Introducing the magical world of unicorn adoptions! We're My Little Unicorn, a unicorn adoption agency. Our platform allows you to bring a touch of whimsy and wonder into your life by adopting your very own unicorn. These mystical creatures come in all shapes and sizes and each one is as unique as a fingerprint. Whether you're looking for a playful companion or a majestic addition to your herd, we have the perfect unicorn for you. Adopting a unicorn is easy, simply browse our gallery, choose your favorite and we'll take care of the rest. So why wait? Bring a touch of magic into your life today and adopt a unicorn!
 
-1. allow runners to register
-2. get all runners
-3. allow spectators to gift competitors of their choice (think Hunger Games-style)
-4. allow competitors to use gifted items as speedups/delays
-5. simulate *n* seconds taking place
-6. get metadata on which items have been gifted (**Industry only**)
+My Little Unicorn is looking to bring their adoption system to the web and is seeking to build a backend service with the following features:
 
-In particular, they want you to build an API capable of handling all of the functionality mentioned above. 
+1. Register a unicorn for adoption
+2. Get the list of all unicorns and their attributes
+3. Ride a unicorn for a certain duration
+4. Get the user who's ridden a particular unicorn for the longest time
+5. Complete the adoption of a unicorn according to the use who rode it the most
+6. Get the list of unicorns adopted by a certain user (**INDUSTRY ONLY**)
 
-_**NOTE: THERE ARE SEPARATE TASKS FOR BOOTCAMP VS. INDUSTRY**_
+In particular, they want you to build an API capable of handling all of the functionality mentioned above.
+
+_**NOTE: THERE ARE SEPARATE TASKS FOR BOOTCAMP VS. INDUSTRY**_. If you are applying to the bootcamp branch but you think you can complete the industry tasks, feel free to give them a shot! This will help us identify which branch might be the best fit for you as well.
 
 # API Specification
 
-The client has listed a comprehensive set of rules/business logic for the event (_make sure you read through this carefully_)
+The client has listed a comprehensive set of rules/business logic for the event (_make sure you read through this carefully_).
 
+## Register Unicorn
 
-## Register Runner
-A Runner can sign up for races at any point. When they sign up, they will begin at the start line with a user-specified base speed (in m/s).
+Unicorns can be signed up for adoption at any point. When unicorns are added, attributes like their name, fur color, horn length, whether or not they're a baby unicorn, and the owner of the unicorn are all provided and should be tracked by your API service.
 
 Example request:
 
-```
-POST /runner
+```json
+POST /unicorns
 
+Request body:
 {
-    "name": "Anjan",
-    "speed": 5,  
+  "name": "Big Drip J",
+  "fur": "white",
+  "hornLength": 8,
+  "isBaby": true,
+  "owner": null
 }
 ```
 
-## Get All Runners
-This is a self-explanatory route — simply return a list of names of all Runners currently registered (any order is fine).
+## Get All Unicorns
+
+Return a list of all unicorns currently registered (any order is fine).
 
 Example request:
 
 ```
-GET /runner
+GET /unicorns
 ```
 
 Example response:
 
-```
+```json
 {
-    "runners": [
-        "Nico",
-        "Vaikundh",
-        "Danielle",
-        "Anjan",
-    ]
-}
-```
-
-## Send Gift
-A spectator can send a gift to any Runner, and for free too! However, if the name of the spectator has the same starting letter as the name of the gift, then the gift transaction will fail. They can choose from a predefined list of gifts, which you can access in one of two ways:
-  - **Bootcamp Checkpoint**: you can directly hard-code the values from "db.json" (feel free to morph it into whichever data structure works best for you).
-  - **Industry Checkpoint**: the predefined list is the same, but you should reference it at at http://localhost:3000/gifts (see the section "json-server" for more information). Note that we will be checking to make sure you do not hard-code the items in this predefined list — treat it as an API endpoint!
-
-If the gifting fails (because of the first letter criteria), return some form of error message (you can choose an appropriate response code and message).
-
-Example request:
-
-```
-POST /gift
-
-{
-    "name": "Mystery Pills",
-    "spectator": "Emir",
-    "runner": "Danielle",
-}
-```
-
-## Use Gift
-A Runner can use any gift in their inventory at any time. When they use the gift, their base velocity should be internally updated to reflect the boost from the gift (just add the boost value).
-  - **Bootcamp Checkpoint**: the above functionality is enough
-  - **Industry Checkpoint**: the same boost cannot be used 4 times in a row, globally. This means that if the last 3 uses of gifts (across all Runners) have been "Bread", for example, then the next gift to be used cannot be "Bread" again.
-
-If there is any issue in using the boost, return some form of error message (you can choose an appropriate response code and message).
-
-Example request:
-
-```
-POST /use
-
-{
-    "runner": "Anjan",
-    "boost": "Bread",  
-}
-```
-
-## Simulate Race Time
-The client should be able to simulate passage of time. Based on the user-specified # of seconds, the race "fast-forwards" and each Runner's position should update accordingly based on their current stats.
-
-A response should then be passed back with a list of names of all Runners, in sorted order based on their position (first place, second place, etc.)
-
-Example request:
-
-```
-POST /sim
-
-{
-    "seconds": 10,  
-}
-```
-
-Example response:
-
-```
-
-{
-    "runners": [
-        "Danielle",
-        "Vaikundh",
-        "Nico",
-        "Anjan",
-    ]  
-}
-```
-
-## Get Gift Metadata
-Note: This endpoint is only a requirement for the **Industry checkpoint**. If you are only looking to apply for the Bootcamp, you can skip this (although feel free to work on it if it sounds interesting)!
-
-When metadata on gifts is requested, we will return an unordered mapping from each giftable item to how many times it has been **gifted** (not how many times it has been **used**, necessarily).
-
-Example request:
-
-```
-GET /gift/metadata
-```
-
-Example response:
-
-```
-
-{
-    "gifts": {
-        "Bread": 1,
-        "Water": 3,
-        "Mystery Pills": 0,
-        "Cookie": 5,
-        "Cheese Touch": 1,
+  "unicorns": [
+    {
+      "name": "Big Drip J",
+      "fur": "white",
+      "hornLength": 8,
+      "isBaby": true,
+      "owner": "Jiro"
+    },
+    {
+      "name": "Big Blue Horn",
+      "fur": "blue",
+      "hornLength": 12,
+      "isBaby": false,
+      "owner": "Saketh"
+    },
+    {
+      "name": "Brother",
+      "fur": "yellow",
+      "hornLength": 99
+      "isBaby": false
+      "owner": "Nico"
     }
+  ]
 }
 ```
 
-## Note: json-server
-For the industry checkpoint in "Send Gift", you will need to spin up a localhost server to provide the API endpoint with valid gifts. To do so, please follow the instructions below, or at [this link](https://github.com/typicode/json-server):
+**Industry Checkpoint**: Add additional functionality to this API route allowing you to include a query parameter that filters the unicorns by their fur color property.
 
-Install JSON Server 
+Example request:
 
 ```
-npm install -g json-server
+GET /unicorns?fur=white
 ```
 
-Start JSON Server
+Example response:
 
-```bash
-json-server --watch db.json
+```json
+{
+  "unicorns": [
+    {
+      "name": "Big Drip J",
+      "fur": "white",
+      "hornLength": 8,
+      "isBaby": true,
+      "owner": "Jiro"
+    }
+  ]
+}
 ```
 
-Now if you go to [http://localhost:3000/gifts](http://localhost:3000/gifts), you should see the gifts. 
+## Ride Unicorn
 
-Since this JSON server will be using up the :3000 port, make sure to use a different one for your backend server.
+A user can ride a unicorn that's up for adoption to see whether they're a good match for each other. When they ride a unicorn, the duration they ride for should tracked.
+
+**INDUSTRY ONLY**: Users should only be able to ride a unicorn which has not been adopted yet, i.e. only when its owner is `null`. Also, a user should only be able to ride the same unicorn twice; if they try to ride a unicorn a third time, the API should return an error.
+
+Example request:
+
+```json
+POST /ride
+
+Request body:
+{
+  "user": "Anish",
+  "unicorn": "Puff",
+  "duration": 10
+}
+```
+
+## Get Longest Rider
+
+This route should return the name of the user who has ridden a unicorn with a particular name for the longest **total** duration.
+
+- Break ties by choosing the user who has the name that comes first in alphabetical order.
+- If there is no user who has ridden the unicorn, then the API should return an error.
+
+Example request:
+
+```
+GET /longest-rider/Puff
+```
+
+Example response:
+
+```json
+{
+  "user": "Emir"
+}
+```
+
+## Adopt Unicorn
+
+This route should receive the name of a unicorn and complete an adoption by changing its owner to the user who has ridden it for the longest duration.
+
+- Break ties the same way as the previous `GET /longest-rider` route.
+- If there is no user who has ridden the unicorn, then the API should return an error.
+
+Example request:
+
+```json
+POST /adopt
+
+Request body:
+{
+  "unicorn": "Big Drip J"
+}
+```
+
+## Get Adopted Unicorns (**INDUSTRY ONLY**)
+
+This route should return a list of unicorns that have been adopted by a certain user, along with the total duration they rode each unicorn for.
+
+Example request:
+
+```
+GET /adopted-unicorns/Jiro
+```
+
+Result:
+
+```json
+{
+  "unicorns": [
+    {
+      "name": "Big Drip J",
+      "duration": 10
+    },
+    {
+      "name": "Big Blue Horn",
+      "duration": 20
+    }
+  ]
+}
+```
 
 # More Examples
 
 In case it helps, here's a couple of example scenarios of how the API might be used:
 
-1. Register a few runners:
+1. Register a few unicorns:
 
-```
-Request: POST /runner
+```json
+Request: POST /unicorns
 {
-    "name": "Anjan",
-    "speed": 5,  
-}
-```
-```
-Request: POST /runner
-{
-    "name": "Vaikundh",
-    "speed": 6,  
-}
-```
-```
-Request: POST /runner
-{
-    "name": "Danielle",
-    "speed": 9,  
-}
-```
-```
-Request: POST /runner
-{
-    "name": "Nico",
-    "speed": 7,  
+    "name": "Big Drip J",
+    "fur": "white",
+    "hornLength": 8,
+    "isBaby": true,
+    "owner": null
 }
 ```
 
-2. Get all runners to make sure they show up
-
-```
-Request: GET /runner
-```
-```
-Response:
+```json
+Request: POST /unicorns
 {
-    "runners": [
-        "Nico",
-        "Vaikundh",
-        "Danielle",
-        "Anjan",
-    ]
+  "name": "Big Blue Horn",
+  "fur": "blue",
+  "hornLength": 12,
+  "isBaby": false,
+  "owner": null
 }
 ```
 
-3. Send some gifts, with some succeeding and some failing
-
-**This request should succeed:**
-```
-Request: POST /gift
-
+```json
+Request: POST /unicorns
 {
-    "name": "Water",
-    "spectator": "Emir",
-    "runner": "Danielle",
+  "name": "Brother",
+  "fur": "yellow",
+  "hornLength": 99,
+  "isBaby": false,
+  "owner": null
 }
 ```
 
-**This request should succeed:**
-```
-Request: POST /gift
-
+```json
+Request: POST /unicorns
 {
-    "name": "Cheese Touch",
-    "spectator": "Kate",
-    "runner": "Nico",
+  "name": "Puff",
+  "fur": "pink",
+  "hornLength": 5,
+  "isBaby": true,
+  "owner": "Andy"
 }
 ```
 
-**This request should fail (first-letter criteria):**
-```
-Request: POST /gift
+2. A user checks the list of all unicorns:
 
+```
+Request: GET /unicorns
+```
+
+Result:
+
+```json
 {
-    "name": "Water",
-    "spectator": "William",
-    "runner": "Vaikundh",
-}
-```
-**This request should succeed:**
-```
-Request: POST /gift
-
-{
-    "name": "Water",
-    "spectator": "Cindy",
-    "runner": "Vaikundh",
-}
-```
-
-**This request should succeed:**
-```
-Request: POST /gift
-
-{
-    "name": "Water",
-    "spectator": "Abdul",
-    "runner": "Anjan",
-}
-```
-
-**This request should succeed:**
-```
-Request: POST /gift
-
-{
-    "name": "Water",
-    "spectator": "Cindy",
-    "runner": "Nico",
-}
-```
-
-
-4. Query for gift metadata:
-
-```
-Request: GET /gift/metadata
-```
-
-```
-Response: {
-    "gifts": {
-        "Bread": 0,
-        "Water": 4,
-        "Mystery Pills": 0,
-        "Cookie": 0,
-        "Cheese Touch": 1,
+  "unicorns": [
+    {
+      "name": "Big Drip J",
+      "fur": "white",
+      "hornLength": 8,
+      "isBaby": true,
+      "owner": null
+    },
+    {
+      "name": "Big Blue Horn",
+      "fur": "blue",
+      "hornLength": 12,
+      "isBaby": false,
+      "owner": null
+    },
+    {
+      "name": "Brother",
+      "fur": "yellow",
+      "hornLength": 99,
+      "isBaby": false,
+      "owner": null
+    },
+    {
+      "name": "Puff",
+      "fur": "pink",
+      "hornLength": 5,
+      "isBaby": true,
+      "owner": "Andy"
     }
+  ]
 }
 ```
 
-5. Simulate passage of time
+(**INDUSTRY ONLY**) A user checks the list of all blue unicorns:
 
 ```
-Request: POST /sim
+Request: GET /unicorns?fur=blue
+```
 
+Response:
+
+```json
 {
-    "seconds": 10,  
+  "unicorns": [
+    {
+      "name": "Big Blue Horn",
+      "fur": "blue",
+      "hornLength": 12,
+      "isBaby": false,
+      "owner": null
+    }
+  ]
 }
 ```
 
-Example response:
+3. Users ride some unicorns:
 
-```
-
+```json
+Request: POST /ride
 {
-    "runners": [
-        "Danielle",
-        "Nico",
-        "Vaikundh",
-        "Anjan",
-    ]  
+  "user": "Natalia",
+  "unicorn": "Big Blue Horn",
+  "duration": 5
 }
 ```
 
-6. Some Runners will use gifts
-```
-POST /use
-
+```json
+Request: POST /ride
 {
-    "runner": "Anjan",
-    "boost": "Water",  
-}
-```
-Anjan's speed should now be updated internally.
-
-7. Simulate passage of time (again)
-
-```
-Request: POST /sim
-
-{
-    "seconds": 30,  
+  "user": "Nico",
+  "unicorn": "Big Blue Horn",
+  "duration": 5
 }
 ```
 
-Example response:
-
-```
-
+```json
+Request: POST /ride
 {
-    "runners": [
-        "Danielle",
-        "Anjan",
-        "Nico",
-        "Vaikundh",
-    ]  
+  "user": "Jiro",
+  "unicorn": "Big Drip J",
+  "duration": 15
 }
 ```
 
-8. Use remaining gifts (some will fail, if you did the Industry Checkpoint — if you did the Bootcamp Checkpoint, all will succeed).
-```
-POST /use
-
+```json
+Request: POST /ride
 {
-    "runner": "Anjan",
-    "boost": "Water",  
+    "user": "Anish",
+    "unicorn": "Big Drip J",
+    "duration": 20
 }
 ```
 
-**This request should succeed:**
-```
-Request: POST /use
-
+```json
+Request: POST /ride
 {
-    "runner": "Danielle",
-    "boost": "Water",  
+  "user": "Jiro",
+  "unicorn": "Big Drip J",
+  "duration": 15
 }
 ```
 
-**This request should succeed:**
-```
-Request: POST /use
+**(INDUSTRY ONLY)** If you complete the industry checkpoint, the following request should fail since Jiro has already ridden Big Drip J twice:
 
+```json
+Request: POST /ride
 {
-    "runner": "Vaikundh",
-    "boost": "Water",  
+  "user": "Jiro",
+  "name": "Big Drip J",
+  "duration": 1
 }
 ```
 
-**This request should fail (industry checkpoint), no 4-in-a-row rule:**
-```
-Request: POST /use
+**(INDUSTRY ONLY)** This request should also fail if you complete the industry checkpoint, since Puff already has an owner:
 
+```json
+Request: POST /ride
 {
-    "runner": "Nico",
-    "boost": "Water",  
+  "user": "Natalia",
+  "name": "Puff",
+  "duration": 20
 }
 ```
 
-**This request should succeed:**
-```
-Request: POST /use
+4. Find who's ridden some unicorns for the longest total time:
 
+```json
+Request: GET /longest-rider/Big Drip J
+```
+
+Response:
+
+```json
 {
-    "runner": "Nico",
-    "boost": "Cheese Touch",  
+  "user": "Jiro"
 }
 ```
 
-
-
-9. Simulate passage of time one last time.
+Natalia and Nico both rode Big Blue Horn for 5 minutes, but Natalia's name comes first in alphabetical order, so she should be returned:
 
 ```
-Request: POST /sim
+Request: GET /longest-rider/Big Blue Horn
+```
 
+Response:
+
+```json
 {
-    "seconds": 1000,  
+  "name": "Natalia"
 }
 ```
 
-Example response:
+Nobody rode Brother, so the API should return an error for this request:
 
 ```
+Request: GET /longest-rider?name=Brother
+```
 
+5. Some unicorns are adopted:
+
+```json
+Request: POST /adopt
 {
-    "runners": [
-        "Nico",
-        "Danielle",
-        "Vaikundh",
-        "Anjan"
-    ]  
+  "name": "Big Drip J"
+}
+```
+
+```json
+Request: POST /adopt
+{
+  "name": "Big Blue Horn"
+}
+```
+
+This request should fail since nobody rode Brother:
+
+```json
+Request: POST /adopt
+{
+  "name": "Brother"
+}
+```
+
+6. Check the new list of unicorns, including their new owners:
+
+```json
+Request: GET /unicorns
+```
+
+Response:
+
+```json
+{
+  "unicorns": [
+    {
+      "name": "Big Drip J",
+      "fur": "white",
+      "hornLength": 8,
+      "isBaby": true,
+      "owner": "Jiro"
+    },
+    {
+      "name": "Big Blue Horn",
+      "fur": "blue",
+      "hornLength": 12,
+      "isBaby": false,
+      "owner": "Natalia"
+    },
+    {
+      "name": "Brother",
+      "fur": "yellow",
+      "hornLength": 99,
+      "isBaby": false,
+      "owner": null
+    },
+    {
+      "name": "Puff",
+      "fur": "pink",
+      "hornLength": 5,
+      "isBaby": true,
+      "owner": "Andy"
+    }
+  ]
+}
+```
+
+1. (**INDUSTRY ONLY**) Get the list of Natalia's unicorns, and how long she's ridden each of them:
+
+```json
+Request: GET /adopted-unicorns/Natalia
+```
+
+Response:
+
+```json
+{
+  "unicorns": [
+    {
+      "name": "Big Blue Horn",
+      "duration": 5
+    }
+  ]
 }
 ```
 
@@ -472,7 +524,7 @@ Example response:
 
 Some of these routes are naturally harder than others. If you aren't able to finish all of the routes for the project, **don't worry**! It's supposed to be challenging, and we don't expect everyone to finish it. We have created separate checkpoints for the bootcamp vs. industry, so you don't necessarily need to complete the full project in order to move on in this round :)
 
-Note: we **highly** recommend using MongoDB as your database for this project, although if you don't have experience with it, any NoSQL database is also a great alternative. If none of those work however, you are still welcome to use other alternatives.
+Note: we highly recommend using MongoDB as your database for this project, although if you don't have experience with it, any NoSQL database is also a great alternative. If none of those work however, you are still welcome to use other databases.
 
 It is also encouraged to use JavaScript/TypeScript with Node.js for your backend, but it is completely fine if you would rather use a different stack.
 
@@ -480,9 +532,9 @@ It is also encouraged to use JavaScript/TypeScript with Node.js for your backend
 
 In addition to building out this API, you will need to write up a short design doc (designdoc.md). We don't intend for this to take very much time, but we want to hear some of the choices you made and why. To be specific, here are some points you might want to talk about:
 
-- why did you choose to organize your data schemas/models in this particular way?
-- can talk a bit about the "harder" routes that you worked on — harder is completely subjective, so feel free to get creative here!
-- how did you decide on certain response codes?
+- Why did you choose to organize your data schemas/models in a particular way?
+- Feel free to talk a bit about the "harder" routes that you worked on and how you approached them — harder is completely subjective, so feel free to get creative here!
+- How did you decide on certain response codes?
 
 This should be at most a page, so feel free to be brief!
 
@@ -491,6 +543,4 @@ This should be at most a page, so feel free to be brief!
 There are many details that are left intentionally vague. Though you are very much welcome to
 email us to ask for clarifications, we will most likely tell you to use your best judgement.
 Because of this, feel free to create a `assumptions.md`, where you can type out and
-voice any assumptions you made throughout this project. We also _highly_ encourage you to
-write out your own documentation to this API and provide us a glimpse of your rationale
-behind every design decision.
+voice any assumptions you made throughout this project - we really want to hear about your rationale behind every design decision.
