@@ -1,8 +1,8 @@
-# WDB Backend Technical Project Sp '23 - Unicorn Adoption
+# WDB Backend Technical Project Fa '23 - Husband Calling 🗣️
 
 ## Preface
 
-Thanks for applying to Web Development at Berkeley & for taking the time to work on this technical project. Projects are due Monday, January 30th by 11:59 PM.
+Thanks for applying to Web Development at Berkeley & for taking the time to work on this technical project. Projects are due **FILL IN THE DATE/TIME HERE**
 
 This project is designed for **you** to gauge whether you want to apply to the **bootcamp** or **industry** branch. Completing all checkpoints for the branch you are applying to is highly preferred, but don't worry if you aren't able to finish everything! As an estimate, you shouldn't need to spend any longer than ~3-4 hours on this project -- we don't want this to be a huge burden on you.
 
@@ -12,32 +12,31 @@ This section will be updated with clarifications as they come up!
 
 ## Submission Instructions
 
-Welcome to WDB's backend project for development branch applicants — Spring 2023 👋
+Welcome to WDB's backend project for development branch applicants — Fall 2023 👋
 
 Make sure you read this ENTIRE DOCUMENT, especially these instructions, carefully before you start. If you have any questions please reach out to [our email](webatberkeley@gmail.com).
 
 To submit your project, please place your submission into a GitHub repo that is set to private. You
 will be submitting your code on [Gradescope](https://www.gradescope.com/). If you do not have a
 Gradescope account, please create one and if you are unable to create one, please email us
-immediately. The Gradescope course code is `8NBBGP`. You will see two different assignments:
+immediately. The Gradescope course code is **FILL IN A GRADESCOPE CODE HERE**. You will see two different assignments:
 `Frontend Project` and `Backend Project`. _Please only submit to Backend Technical Project._ You can ignore Frontend Technical Project.
 
-The technical project will be due by Monday, 1/30 at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then.
+The technical project will be due by **FILL IN THE TIME HERE** at midnight. We will be unable to respond to clarification emails sent in after then, so if you have any questions about the project, please let us know before then.
 
 Also, this page may potentially keep changing if we get some frequently asked questions, so keep this repository bookmarked and check back on it every now and then! If there are major changes however, we'll make sure to email you about those.
 
 ## Introduction
 
-> Introducing the magical world of unicorn adoptions! We're My Little Unicorn, a unicorn adoption agency. Our platform allows you to bring a touch of whimsy and wonder into your life by adopting your very own unicorn. These mystical creatures come in all shapes and sizes and each one is as unique as a fingerprint. Whether you're looking for a playful companion or a majestic addition to your herd, we have the perfect unicorn for you. Adopting a unicorn is easy, simply browse our gallery, choose your favorite and we'll take care of the rest. So why wait? Bring a touch of magic into your life today and adopt a unicorn!
+> The annual Husband Calling contest at the Iowa State Fair is an entertaining event that has seen more than 500 contestants and over 2000 spectators from around the country gather to share little moments of affection. Contestants take turns on stage in speaking to their partner, competing to be the dearest and most loving of all. It is a great way of strengthening relationships and fostering a community of love.
 
-My Little Unicorn is looking to bring their adoption system to the web and is seeking to build a backend service with the following features:
+The Iowa State Fair is looking to bring their registration and contest-management system to the web and is seeking to build a backend service with the following features:
 
-1. Register a unicorn for adoption
-2. Get the list of all unicorns and their attributes
-3. Ride a unicorn for a certain duration
-4. Get the user who's ridden a particular unicorn for the longest time
-5. Complete the adoption of a unicorn according to the use who rode it the most
-6. Get the list of unicorns adopted by a certain user (**INDUSTRY ONLY**)
+1. Register a contestant/husband pair
+2. Get a list of all contestants
+3. Perform a "husband call" and score it
+4. Get the highest-score shout across all contestants **(INDUSTRY ONLY)**
+5. Buy a power-up item **(INDUSTRY ONLY)**
 
 In particular, they want you to build an API capable of handling all of the functionality mentioned above.
 
@@ -47,557 +46,131 @@ _**NOTE: THERE ARE SEPARATE TASKS FOR BOOTCAMP VS. INDUSTRY**_. If you are apply
 
 The client has listed a comprehensive set of rules/business logic for the event (_make sure you read through this carefully_).
 
-## Register Unicorn
+## Register Contestant/Husband
 
-Unicorns can be signed up for adoption at any point. When unicorns are added, attributes like their name, fur color, horn length, whether or not they're a baby unicorn, and the owner of the unicorn are all provided and should be tracked by your API service.
+Register a contestant and associate them with their husband. Every contestant also has a "vocalRange" field (which represents how many meters their voice will go). Lastly, the husband has a "location" which represents their distance (in meters) from the contestant zone.
+
+You can assume that all contestants and husbands have a unique name.
 
 Example request:
 
 ```
-POST /unicorns
+POST /contestants
 ```
 
 Request body:
 
 ```json
 {
-  "name": "Big Drip J",
-  "fur": "white",
-  "hornLength": 8,
-  "isBaby": true,
-  "owner": null
+  "contestantName": "Alice",
+  "husbandName": "Bob",
+  "vocalRange": 100,
+  "location": 500
 }
 ```
 
-## Get All Unicorns
+The response can look like anything. You should raise an error if a field is missing, with a descriptive error message.
 
-Return a list of all unicorns currently registered (any order is fine).
+## Get All Contestants
+
+Return a list of all contestants and the husband they are paired with.
+
+**Industry Checkpoint**: Add additional functionality to this API route allowing you to include a query parameter `sortByName=true` that determines if you should return by sorted order of contestantName. (ex: GET /contestants?sortedByName=true)
 
 Example request:
 
 ```
-GET /unicorns
+GET /contestants
 ```
 
 Example response:
 
 ```json
 {
-  "unicorns": [
+  "pairs": [
     {
-      "name": "Big Drip J",
-      "fur": "white",
-      "hornLength": 8,
-      "isBaby": true,
-      "owner": "Jiro"
+      "contestantName": "Alice",
+      "husbandName": "Bob"
     },
     {
-      "name": "Sapphire",
-      "fur": "blue",
-      "hornLength": 12,
-      "isBaby": false,
-      "owner": "Saketh"
-    },
-    {
-      "name": "Brother",
-      "fur": "yellow",
-      "hornLength": 99
-      "isBaby": false
-      "owner": "Nico"
+      "contestantName": "Cady",
+      "husbandName": "Desmond"
     }
   ]
 }
 ```
 
-**Industry Checkpoint**: Add additional functionality to this API route allowing you to include a query parameter that filters the unicorns by their fur color property.
+## Perform Husband Call and Score it
+
+Of course, no husband calling is complete without, well, a husband call!
+
+We determine the score of a husband call based on the husband's location and the contestant's vocalRange. If the vocalRange is exactly equal to the location, the score is equal to the location. If the vocal range is greater, the score is the absolute difference between the location and the vocalRange. In both these cases, return the score.
+
+If the vocalRange is less, we should raise an error with a descriptive message.
 
 Example request:
 
 ```
-GET /unicorns?fur=white
+GET /husbandCall
 ```
 
 Example response:
 
 ```json
 {
-  "unicorns": [
-    {
-      "name": "Big Drip J",
-      "fur": "white",
-      "hornLength": 8,
-      "isBaby": true,
-      "owner": "Jiro"
-    }
-  ]
+  "score": 100
 }
 ```
 
-## Ride Unicorn
+## Get Highest Score Shout (INDUSTRY ONLY)
 
-A user can ride a unicorn that's up for adoption to see whether they're a good match for each other. When they ride a unicorn, the duration they ride for should tracked.
-
-**INDUSTRY ONLY**: Users should only be able to ride a unicorn which has not been adopted yet, i.e. only when its owner is `null`. Also, a user should only be able to ride the same unicorn twice; if they try to ride a unicorn a third time, the API should return an error.
+This route should return the score of the best shout across all contestants, as well as the contestant. You can either assume no ties or break ties randomly, just make sure it is clear which option you go for.
 
 Example request:
 
 ```
-POST /ride
-```
-
-Request body:
-
-```json
-{
-  "user": "Anish",
-  "unicorn": "Puff",
-  "duration": 10
-}
-```
-
-## Get Longest Rider
-
-This route should return the name of the user who has ridden a unicorn with a particular name for the longest **total** duration.
-
-- Break ties by choosing the user who has the name that comes first in alphabetical order.
-- If there is no user who has ridden the unicorn, then the API should return an error.
-
-Example request:
-
-```
-GET /longest-rider/Puff
+GET /bestShout
 ```
 
 Example response:
 
 ```json
 {
-  "user": "Emir"
+  "contestantName": "Alice",
+  "score": 100
 }
 ```
 
-## Adopt Unicorn (**INDUSTRY ONLY**)
+## Buy a Power-up Item **(INDUSTRY ONLY)**
 
-This route should receive the name of a unicorn and complete an adoption by changing its owner to the user who has ridden it for the longest duration.
+Some contestants have said they want to be able to use the best and latest tech to improve their scores! Implement an API route that lets contestants purchase an item and add it to their inventory. The response should be a list of all the items in the user's inventory.
 
-- Break ties the same way as the previous `GET /longest-rider` route.
-- If there is no user who has ridden the unicorn, then the API should return an error.
+- Each item has a "boost", which increases the vocalRange by that amount.
+- Items cannot be removed from the inventory.
+- All items in the inventory get used when a husbandCall is made.
 
-Example request:
+Note that completing this section will also involve modifying your existing husbandCall route!
+
+Example request (note the route has the contestantName in it!):
 
 ```
-POST /adopt
+POST /buyItem/Alice
 ```
 
 Request body:
 
 ```json
 {
-  "unicorn": "Big Drip J"
+  "item": "megaphone",
+  "boost": 150
 }
-```
-
-## Get Adopted Unicorns (**INDUSTRY ONLY**)
-
-This route should return a list of unicorns that have been adopted by a certain user, along with the total duration they rode each unicorn for.
-
-Example request:
-
-```
-GET /adopted-unicorns/Jiro
 ```
 
 Example response:
 
 ```json
 {
-  "unicorns": [
-    {
-      "name": "Big Drip J",
-      "duration": 10
-    },
-    {
-      "name": "Sapphire",
-      "duration": 20
-    }
-  ]
-}
-```
-
-# More Examples
-
-In case it helps, here's a couple of example scenarios of how the API might be used:
-
-1. Register a few unicorns:
-
-```
-Request: POST /unicorns
-```
-
-Request body:
-
-```json
-{
-  "name": "Big Drip J",
-  "fur": "white",
-  "hornLength": 8,
-  "isBaby": true,
-  "owner": null
-}
-```
-
----
-
-```
-Request: POST /unicorns
-```
-
-Request body:
-
-```json
-{
-  "name": "Sapphire",
-  "fur": "blue",
-  "hornLength": 12,
-  "isBaby": false,
-  "owner": null
-}
-```
-
----
-
-```
-Request: POST /unicorns
-```
-
-Request body:
-
-```json
-{
-  "name": "Brother",
-  "fur": "yellow",
-  "hornLength": 99,
-  "isBaby": false,
-  "owner": null
-}
-```
-
----
-
-```
-Request: POST /unicorns
-```
-
-Request body:
-
-```json
-{
-  "name": "Puff",
-  "fur": "pink",
-  "hornLength": 5,
-  "isBaby": true,
-  "owner": "Andy"
-}
-```
-
-2. A user checks the list of all unicorns:
-
-```
-Request: GET /unicorns
-```
-
-Response:
-
-```json
-{
-  "unicorns": [
-    {
-      "name": "Big Drip J",
-      "fur": "white",
-      "hornLength": 8,
-      "isBaby": true,
-      "owner": null
-    },
-    {
-      "name": "Sapphire",
-      "fur": "blue",
-      "hornLength": 12,
-      "isBaby": false,
-      "owner": null
-    },
-    {
-      "name": "Brother",
-      "fur": "yellow",
-      "hornLength": 99,
-      "isBaby": false,
-      "owner": null
-    },
-    {
-      "name": "Puff",
-      "fur": "pink",
-      "hornLength": 5,
-      "isBaby": true,
-      "owner": "Andy"
-    }
-  ]
-}
-```
-
-(**INDUSTRY ONLY**) A user checks the list of all blue unicorns:
-
-```
-Request: GET /unicorns?fur=blue
-```
-
-Response:
-
-```json
-{
-  "unicorns": [
-    {
-      "name": "Sapphire",
-      "fur": "blue",
-      "hornLength": 12,
-      "isBaby": false,
-      "owner": null
-    }
-  ]
-}
-```
-
-3. Users ride some unicorns:
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Natalia",
-  "unicorn": "Sapphire",
-  "duration": 5
-}
-```
-
----
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Nico",
-  "unicorn": "Sapphire",
-  "duration": 5
-}
-```
-
----
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Jiro",
-  "unicorn": "Big Drip J",
-  "duration": 15
-}
-```
-
----
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Anish",
-  "unicorn": "Big Drip J",
-  "duration": 20
-}
-```
-
----
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Jiro",
-  "unicorn": "Big Drip J",
-  "duration": 15
-}
-```
-
----
-
-**(INDUSTRY ONLY)** If you complete the industry checkpoint, the following request should fail since Jiro has already ridden Big Drip J twice:
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Jiro",
-  "name": "Big Drip J",
-  "duration": 1
-}
-```
-
----
-
-**(INDUSTRY ONLY)** This request should also fail if you complete the industry checkpoint, since Puff already has an owner:
-
-```
-Request: POST /ride
-```
-
-```json
-{
-  "user": "Natalia",
-  "name": "Puff",
-  "duration": 20
-}
-```
-
-4. Find who's ridden some unicorns for the longest total time:
-
-```
-Request: GET /longest-rider/Big Drip J
-```
-
-Response:
-
-```json
-{
-  "user": "Jiro"
-}
-```
-
-Natalia and Nico both rode Sapphire for 5 minutes, but Natalia's name comes first in alphabetical order, so she should be returned:
-
-```
-Request: GET /longest-rider/Sapphire
-```
-
-Response:
-
-```json
-{
-  "name": "Natalia"
-}
-```
-
-Nobody rode Brother, so the API should return an error for this request:
-
-```
-Request: GET /longest-rider?name=Brother
-```
-
-5. **(INDUSTRY ONLY)** Some unicorns are adopted:
-
-```
-Request: POST /adopt
-```
-
-```json
-{
-  "name": "Big Drip J"
-}
-```
-
----
-
-```
-Request: POST /adopt
-```
-
-```json
-{
-  "name": "Sapphire"
-}
-```
-
-This request should fail since nobody rode Brother:
-
----
-
-```
-Request: POST /adopt
-```
-
-```json
-{
-  "name": "Brother"
-}
-```
-
-6. Check the updated list of unicorns, including their new owners (the updated owners is necessary for **INDUSTRY ONLY**):
-
-```
-Request: GET /unicorns
-```
-
-Response:
-
-```json
-{
-  "unicorns": [
-    {
-      "name": "Big Drip J",
-      "fur": "white",
-      "hornLength": 8,
-      "isBaby": true,
-      "owner": "Jiro"
-    },
-    {
-      "name": "Sapphire",
-      "fur": "blue",
-      "hornLength": 12,
-      "isBaby": false,
-      "owner": "Natalia"
-    },
-    {
-      "name": "Brother",
-      "fur": "yellow",
-      "hornLength": 99,
-      "isBaby": false,
-      "owner": null
-    },
-    {
-      "name": "Puff",
-      "fur": "pink",
-      "hornLength": 5,
-      "isBaby": true,
-      "owner": "Andy"
-    }
-  ]
-}
-```
-
-7. (**INDUSTRY ONLY**) Get the list of Natalia's unicorns, and how long she's ridden each of them:
-
-```
-Request: GET /adopted-unicorns/Natalia
-```
-
-Response:
-
-```json
-{
-  "unicorns": [
-    {
-      "name": "Sapphire",
-      "duration": 5
-    }
-  ]
+  "inventory": ["megaphone", "mysterious drugs"]
 }
 ```
 
@@ -617,7 +190,7 @@ In addition to building out this API, you will need to write up a short design d
 
 - Why did you choose to organize your data schemas/models in a particular way?
 - Feel free to talk a bit about the "harder" routes that you worked on and how you approached them — harder is completely subjective, so feel free to get creative here!
-- How did you decide on certain response codes?
+- How did you decide on certain response codes or errors?
 
 This should be at most a page, so feel free to be brief!
 
